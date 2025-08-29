@@ -1,4 +1,3 @@
-// import React from "react";
 import Navbar from "./Navbar";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
@@ -59,10 +58,8 @@ export default function HeroSection() {
   ];
 
   return (
-    // The section is now transparent to allow the shared background to be visible.
-    <section className="relative flex min-h-screen max-h-screen flex-col overflow-hidden p-6 text-white md:p-8 lg:p-12">
-      {/* NOTE: This component's self-contained background has been REMOVED. */}
-
+    <section className="relative flex min-h-screen max-h-screen flex-col overflow-hidden p-4 sm:p-6 text-white md:p-8 lg:p-12">
+      
       <div className="relative z-10 flex h-full flex-grow flex-col">
         <Navbar />
 
@@ -70,7 +67,7 @@ export default function HeroSection() {
           <div className="flex-grow flex flex-col justify-center">
             <div className="relative mx-auto flex w-[90vw] justify-end">
               <motion.p
-                className="mt-8 max-w-[35.2rem] text-right font-sans text-[2.17rem] leading-snug text-white/80"
+                className="mt-6 sm:mt-8 max-w-[35.2rem] text-right font-sans text-[1.25rem] sm:text-[1.6rem] md:text-[2.17rem] leading-snug text-white/80"
                 variants={sharedContainerVariants}
                 initial="hidden"
                 animate="visible"
@@ -91,7 +88,7 @@ export default function HeroSection() {
           <div className="relative mx-auto w-[90vw]">
             <div className="space-y-0">
               <motion.h3
-                className="mb-1 text-right font-serif text-[4.03rem] font-light leading-[0.9] text-white/80 md:text-[4.84rem] lg:text-[6.45rem]"
+                className="mb-1 text-right font-serif text-[2.4rem] sm:text-[3.2rem] md:text-[4.84rem] lg:text-[6.45rem] font-light leading-[0.9] text-white/80"
                 variants={sharedContainerVariants}
                 initial="hidden"
                 animate="visible"
@@ -109,7 +106,7 @@ export default function HeroSection() {
                 initial="hidden"
                 animate="visible"
               >
-                <h1 className="mb-8 font-display text-[17.1vw] font-normal leading-[0.75] tracking-tighter md:text-[15.2vw] lg:text-[13.3vw]">
+                <h1 className=" mb-2 font-display text-[18.5vw] sm:text-[17.1vw] font-normal leading-[0.75] tracking-tighter md:text-[15.2vw] lg:text-[13.3vw]">
                   {h1Characters.map((char, index) => (
                     <motion.span key={index} variants={h1CharacterVariant} className="inline-block">
                       {char}

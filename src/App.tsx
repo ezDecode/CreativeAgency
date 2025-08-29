@@ -2,13 +2,12 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import Background from "./components/Background";
 import HeroSection from "./components/HeroSection";
-import ReadyToBuildSection from "./components/ReadyToBuildSection";
 
 function App() {
-  // Initializes Lenis for a smooth scrolling experience
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      lerp: 0.07,
+      duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
@@ -25,7 +24,6 @@ function App() {
 
     requestAnimationFrame(raf);
 
-    // Cleanup function to destroy Lenis instance on component unmount
     return () => {
       lenis.destroy();
     };
@@ -34,10 +32,12 @@ function App() {
   return (
     <main>
       <Background />
-      {/* This container holds all scrollable content and sits on a higher z-index than the background */}
       <div className="relative z-10">
         <HeroSection />
-        <ReadyToBuildSection />
+
+        <div className="flex h-[60vh] items-center justify-center">
+          <h2 className="text-2xl md:text-4xl text-white/50">The Next Section</h2>
+        </div>
       </div>
     </main>
   );

@@ -1,11 +1,9 @@
 import React, { useRef } from "react";
 
-// Define the props for the component, including standard button attributes
 interface GlowButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-// Changed from forwardRef to a standard functional component
 const GlowButton: React.FC<GlowButtonProps> = ({ className, children, ...props }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -21,7 +19,7 @@ const GlowButton: React.FC<GlowButtonProps> = ({ className, children, ...props }
   return (
     <button
       {...props}
-      ref={buttonRef} // The internal ref is still used here for the effect
+      ref={buttonRef}
       onMouseMove={handleMouseMove}
       className={`
         relative group inline-flex items-center justify-center overflow-hidden 
@@ -29,7 +27,6 @@ const GlowButton: React.FC<GlowButtonProps> = ({ className, children, ...props }
         ${className}
       `}
     >
-      {/* The Glow Effect */}
       <div 
         className="
           pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 
@@ -45,7 +42,6 @@ const GlowButton: React.FC<GlowButtonProps> = ({ className, children, ...props }
           `,
         }}
       />
-      {/* The Button Content */}
       <span className="relative z-10">{children}</span>
     </button>
   );

@@ -1,15 +1,11 @@
 export default function Background() {
   return (
-    // 'fixed' positioning pins the background to the viewport.
-    // 'inset-0' makes it cover the entire screen.
-    // 'z-0' places it on the lowest visual layer.
     <div className="fixed inset-0 z-0">
       <img
         src="/assets/Background.webp"
         alt="Abstract background"
-        className="h-full w-full object-cover" // Ensures the image covers the entire area without distortion
+        className="h-full w-full object-cover"
       />
-      {/* This div applies the "Midnight Mist" gradient overlay on top of the image */}
       <div
         className="absolute inset-0"
         style={{

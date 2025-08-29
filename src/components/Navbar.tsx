@@ -1,12 +1,10 @@
 import type { Variants, Transition } from "framer-motion";
 import  { useState } from "react";
 import GlowButton from "./GlowButton";
-import { motion } from "framer-motion"; // Import the 'Transition' type
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const [isHovered, setIsHovered] = useState(false);
-
-  // --- Animation Variants ---
 
   const containerVariants: Variants = {
     initial: {
@@ -32,13 +30,11 @@ export default function Navbar() {
     hover: { y: "0%" },
   };
   
-  // THE FIX: The 'Transition' type is explicitly applied here, solving the error.
   const sharedTransition: Transition = {
     duration: 0.5,
-    ease: [0.22, 1, 0.36, 1], // TypeScript now correctly interprets this as a cubic-bezier tuple
+    ease: [0.22, 1, 0.36, 1],
   };
 
-  // --- Component Data ---
   const text1 = "Kinetic—Studios".split("");
   const text2 = "Build—Now".split("");
 
@@ -50,9 +46,8 @@ export default function Navbar() {
           onHoverEnd={() => setIsHovered(false)}
           initial="initial"
           animate={isHovered ? "hover" : "initial"}
-          className="relative h-[1.2em] cursor-pointer overflow-hidden text-[1.875rem] font-light font-display tracking-wide text-white leading-tight"
+          className="relative h-[1.2em] cursor-pointer overflow-hidden text-[1.375rem] md:text-[1.875rem] font-light font-display tracking-wide text-white leading-tight"
         >
-          {/* "Kinetic—Studios" animator */}
           <motion.div
             variants={containerVariants}
             className="flex"
@@ -61,14 +56,13 @@ export default function Navbar() {
               <motion.span
                 key={index}
                 variants={kineticVariant}
-                transition={sharedTransition} // This now uses the correctly typed object
+                transition={sharedTransition}
               >
                 {char === " " ? "\u00A0" : char}
               </motion.span>
             ))}
           </motion.div>
 
-          {/* "Build Now" animator */}
           <motion.div
             variants={containerVariants}
             className="absolute top-0 flex"
@@ -77,7 +71,7 @@ export default function Navbar() {
               <motion.span
                 key={index}
                 variants={buildVariant}
-                transition={sharedTransition} // This also uses the correctly typed object
+                transition={sharedTransition}
               >
                 {char === " " ? "\u00A0" : char}
               </motion.span>
@@ -85,12 +79,11 @@ export default function Navbar() {
           </motion.div>
         </motion.div>
 
-        {/* Navigation buttons */}
-        <nav className="flex gap-3">
-          <GlowButton className="px-[2.25rem] py-3 text-[1.3125rem] font-light">
+        <nav className="flex gap-2 sm:gap-3">
+          <GlowButton className="px-[1.25rem] py-2.5 text-[1.05rem] md:px-[2.25rem] md:py-3 md:text-[1.3125rem] font-light">
             Components
           </GlowButton>
-          <GlowButton className="px-[2.25rem] py-3 text-[1.3125rem] font-light">
+          <GlowButton className="px-[1.25rem] py-2.5 text-[1.05rem] md:px-[2.25rem] md:py-3 md:text-[1.3125rem] font-light">
             Request Project
           </GlowButton>
         </nav>

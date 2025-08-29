@@ -1,16 +1,10 @@
 @import "tailwindcss";
 
-/* 
-  Tailwind v4 Theme Configuration via CSS Custom Properties
-  These variables will be automatically detected by Tailwind
-*/
 :root {
-  /* Font family definitions for Tailwind utilities */
   --font-sans: 'PolySans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'PP Editorial New', Georgia, 'Times New Roman', serif;
   --font-display: 'PolySans Variable', 'PolySans', system-ui, sans-serif;
   
-  /* Base typography and rendering settings */
   font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
@@ -21,11 +15,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
-  /* Performance optimizations */
   --scroll-behavior: smooth;
 }
 
-/* Performance: Critical fonts loaded first with font-display: swap */
 @font-face {
   font-family: 'PolySans';
   src: url('/fonts/PolySans/PolySans Neutral.ttf') format('truetype');
@@ -42,7 +34,6 @@
   font-display: swap;
 }
 
-/* Variable fonts for enhanced performance */
 @font-face {
   font-family: 'PolySans Variable';
   src: url('/fonts/PolySans/PolySansGX.ttf') format('truetype-variations');
@@ -61,7 +52,6 @@
   font-stretch: 75% 125%;
 }
 
-/* PP Editorial New - Load on demand for better performance */
 @font-face {
   font-family: 'PP Editorial New';
   src: url('/fonts/PPEditorialNew/PPEditorialNew-Regular.ttf') format('truetype');
@@ -86,7 +76,6 @@
   font-display: swap;
 }
 
-/* Optional italic variants - loaded as needed */
 @font-face {
   font-family: 'PP Editorial New';
   src: url('/fonts/PPEditorialNew/PPEditorialNew-UltralightItalic.ttf') format('truetype');
@@ -111,7 +100,6 @@
   font-display: swap;
 }
 
-/* Lenis smooth scrolling compatibility */
 html.lenis, html.lenis body {
   height: auto;
 }
@@ -129,19 +117,16 @@ body {
   background-color: #242424;
   color: rgba(255, 255, 255, 0.87);
   
-  /* Performance improvements */
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Performance optimizations for animations */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* Optimize for better rendering */
 .will-change-transform {
   will-change: transform;
 }
@@ -150,14 +135,12 @@ body {
   will-change: opacity;
 }
 
-/* Optimize hardware acceleration for better performance */
 .gpu-accelerated {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
 }
 
-/* Optional: Handles system light/dark mode changes */
 @media (prefers-color-scheme: light) {
   body {
     background-color: #ffffff;
@@ -165,7 +148,6 @@ body {
   }
 }
 
-/* Reduce motion for users with motion sensitivity */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -177,10 +159,6 @@ body {
   }
 }
 
-/* 
-  DEBUGGING & SPACING UTILITIES 
-  These classes help with layout debugging and precise spacing control
-*/
 .debug-outline {
   outline: 1px solid red !important;
 }
@@ -189,23 +167,18 @@ body {
   background-color: rgba(255, 0, 0, 0.1) !important;
 }
 
-/* 
-  SPACING SYSTEM OVERRIDES 
-  For cases where Tailwind's spacing doesn't provide enough control
-*/
 .spacing-zone {
   min-height: var(--spacing-height, 6rem);
 }
 
-/* Custom margin utilities for precise control */
 .mb-custom-24 {
-  margin-bottom: 6rem !important; /* 24 * 0.25rem = 6rem */
+  margin-bottom: 6rem !important;
 }
 
 .mb-custom-32 {
-  margin-bottom: 8rem !important; /* 32 * 0.25rem = 8rem */
+  margin-bottom: 8rem !important;
 }
 
 .mb-custom-40 {
-  margin-bottom: 10rem !important; /* 40 * 0.25rem = 10rem */
+  margin-bottom: 10rem !important;
 }
