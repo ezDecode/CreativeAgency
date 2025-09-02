@@ -58,7 +58,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <section className="relative flex min-h-screen max-h-screen flex-col overflow-hidden p-4 sm:p-6 text-white md:p-8 lg:p-12">
+    <section className="relative flex h-screen flex-col overflow-hidden p-4 sm:p-6 text-white md:p-8 lg:p-12">
       
       <div className="relative z-10 flex h-full flex-grow flex-col">
         <Navbar />
