@@ -76,7 +76,7 @@ export default function HeroSection() {
                   <motion.span
                     key={wordIndex}
                     variants={sharedWordVariant}
-                    className="mr-2 inline-block whitespace-nowrap"
+                    className="mr-2 inline-block whitespace-nowrap tracking-tight"
                   >
                     {word}
                   </motion.span>
