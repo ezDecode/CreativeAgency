@@ -1,6 +1,7 @@
-import React, { useState, useRef, createRef } from "react";
-import { motion, AnimatePresence, useMotionValue } from "framer-motion";
-import ContentSection from "./ContentSection";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import KineticTitle from "./KineticTitle";
+import LiquidImage from "./LiquidImage";
 
 const services = [
   {
@@ -27,87 +28,53 @@ const services = [
 
 export default function CapabilitiesSection(): React.ReactElement {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // --- REFS FOR CLICK-TO-SNAP SCROLL ---
-  const contentRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
-  contentRefs.current = services.map((_, i) => contentRefs.current[i] ?? createRef());
-
-  // --- MOUSE POSITION FOR HOVER THUMBNAIL ---
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-      const rect = event.currentTarget.getBoundingClientRect();
-      mouseX.set(event.clientX - rect.left);
-      mouseY.set(event.clientY - rect.top);
-  };
-  
-  const handleNavClick = (index: number) => {
-    contentRefs.current[index].current?.scrollIntoView({
-      behavior: "smooth", // Changed to smooth for a more graceful snap
-      block: "center",
-    });
-  };
+  // NOTE: This logic could be replaced with a scrolling library for more robust snapping.
+  // For this example, we simplify by showing one service at a time.
+  const activeService = services[activeIndex];
 
   return (
-    <div className="relative bg-black text-white grid grid-cols-1 lg:grid-cols-3">
-      {/* --- LEFT COLUMN: STICKY NAVIGATION --- */}
+    <div className="relative bg-black text-white grid grid-cols-1 lg:grid-cols-3 min-h-screen">
+      {/* --- LEFT COLUMN: KINETIC NAVIGATION --- */}
       <aside 
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => setHoveredIndex(null)}
-        className="hidden lg:block lg:col-span-1 sticky top-0 h-screen p-16"
+        className="lg:col-span-1 flex flex-col justify-center sticky top-0 h-screen p-16"
       >
-        <div className="flex flex-col gap-y-4 relative">
+        <div className="flex flex-col gap-y-8 relative">
           {services.map((service, index) => (
-            <div 
-              key={index} 
-              className="relative"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onClick={() => handleNavClick(index)}
-            >
-              <h3 
-                className={`font-sans text-2xl font-light tracking-tighter cursor-pointer transition-opacity duration-300 ${activeIndex === index ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}
-              >
-                {service.title}
-              </h3>
-              {activeIndex === index && (
-                 <motion.div className="absolute left-[-2rem] top-0 h-full w-1 bg-white" layoutId="active-line" />
-              )}
-            </div>
+            <KineticTitle
+              key={index}
+              title={service.title}
+              isActive={activeIndex === index}
+              onClick={() => setActiveIndex(index)}
+              layoutId={`title-${service.title}`} // Unique layoutId for the animation
+            />
           ))}
         </div>
-        
-        {/* --- HOVER THUMBNAIL --- */}
-        <AnimatePresence>
-            {hoveredIndex !== null && (
-                 <motion.div
-                    className="absolute w-48 h-32 rounded-lg bg-cover bg-center pointer-events-none"
-                    style={{
-                        x: mouseX,
-                        y: mouseY,
-                        backgroundImage: `url(${services[hoveredIndex].imageUrl})`
-                    }}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.2, ease: 'easeOut' }}
-                 />
-            )}
-        </AnimatePresence>
       </aside>
 
-      {/* --- RIGHT COLUMN: SCROLLING CONTENT --- */}
-      <main className="lg:col-span-2">
-        {services.map((service, index) => (
-          <ContentSection
-            key={index}
-            ref={contentRefs.current[index]}
-            service={service}
-            index={index}
-            setActiveIndex={setActiveIndex}
-          />
-        ))}
+      {/* --- RIGHT COLUMN: CONTENT CANVAS --- */}
+      <main className="lg:col-span-2 flex items-center p-8 md:p-16">
+        <div className="w-full">
+            <motion.div
+              key={activeIndex} // Re-triggers animation on change
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+                <LiquidImage imageUrl={activeService.imageUrl} />
+                <div className="mt-6 flex justify-between items-start">
+                    <motion.h2 
+                        layoutId={`title-${activeService.title}`} // Matching layoutId
+                        className="font-sans text-2xl font-light lowercase tracking-tight text-white/90"
+                    >
+                      {activeService.title}
+                    </motion.h2>
+                    <p className="font-sans tracking-tight font-light text-lg text-white/60 max-w-sm text-right">
+                      {activeService.description}
+                    </p>
+                </div>
+            </motion.div>
+        </div>
       </main>
     </div>
   );
