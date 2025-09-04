@@ -182,3 +182,13 @@ body {
 .mb-custom-40 {
   margin-bottom: 10rem !important;
 }
+
+/* Add this to your index.css */
+.service-glow {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    rgba(124, 58, 237, 0.1), /* A soft, elegant purple glow */
+    rgba(124, 58, 237, 0) 40%,
+    transparent 70%
+  );
+}
