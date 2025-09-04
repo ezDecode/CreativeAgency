@@ -2,13 +2,14 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import HeroSection from "./components/HeroSection";
 import CapabilitiesSection from "./components/CapabilitiesSection";
-import CreationsSection from "./components/CreationsSection"; // Import the new section
+import CreationsSection from "./components/CreationsSection";
+// Other imports remain the same
 
 function App() {
-  // Lenis smooth scroll setup
   useEffect(() => {
+    // REFINEMENT 2: Lerp value tuned for a slightly more responsive feel
     const lenis = new Lenis({
-      lerp: 0.07,
+      lerp: 0.08,
       duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
