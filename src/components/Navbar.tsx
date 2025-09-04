@@ -7,34 +7,12 @@ export default function Navbar() {
   const [isHovered, setIsHovered] = useState(false);
 
   const containerVariants: Variants = {
-    initial: {
-      transition: {
-        staggerChildren: 0.02,
-        staggerDirection: -1,
-      },
-    },
-    hover: {
-      transition: {
-        staggerChildren: 0.03,
-      },
-    },
+    initial: { transition: { staggerChildren: 0.02, staggerDirection: -1 } },
+    hover: { transition: { staggerChildren: 0.03 } },
   };
-
-  const kineticVariant: Variants = {
-    initial: { y: "0%" },
-    hover: { y: "-100%" },
-  };
-
-  const buildVariant: Variants = {
-    initial: { y: "100%" },
-    hover: { y: "0%" },
-  };
-  
-  const sharedTransition: Transition = {
-    duration: 0.5,
-    ease: [0.22, 1, 0.36, 1],
-  };
-
+  const kineticVariant: Variants = { initial: { y: "0%" }, hover: { y: "-100%" } };
+  const buildVariant: Variants = { initial: { y: "100%" }, hover: { y: "0%" } };
+  const sharedTransition: Transition = { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
   const text1 = "Kinetic—Studios".split("");
   const text2 = "Build—Now".split("");
 
@@ -46,33 +24,19 @@ export default function Navbar() {
           onHoverEnd={() => setIsHovered(false)}
           initial="initial"
           animate={isHovered ? "hover" : "initial"}
+          // --- THE FIX IS HERE: Added the 'relative' class ---
           className="relative h-[1.2em] cursor-pointer overflow-hidden text-[1.375rem] md:text-[1.875rem] font-light font-display tracking-wide text-white leading-tight"
         >
-          <motion.div
-            variants={containerVariants}
-            className="flex"
-          >
+          <motion.div variants={containerVariants} className="flex">
             {text1.map((char, index) => (
-              <motion.span
-                key={index}
-                variants={kineticVariant}
-                transition={sharedTransition}
-              >
+              <motion.span key={index} variants={kineticVariant} transition={sharedTransition}>
                 {char === " " ? "\u00A0" : char}
               </motion.span>
             ))}
           </motion.div>
-
-          <motion.div
-            variants={containerVariants}
-            className="absolute top-0 flex"
-          >
+          <motion.div variants={containerVariants} className="absolute top-0 flex">
             {text2.map((char, index) => (
-              <motion.span
-                key={index}
-                variants={buildVariant}
-                transition={sharedTransition}
-              >
+              <motion.span key={index} variants={buildVariant} transition={sharedTransition}>
                 {char === " " ? "\u00A0" : char}
               </motion.span>
             ))}

@@ -1,4 +1,3 @@
-import { motion, useMotionValue } from "framer-motion";
 import ProjectCard from "./ProjectCard";
 
 const projects = [
@@ -22,64 +21,38 @@ const projects = [
     category: "Digital Product",
     imageUrl: "/images/project-delta.jpg",
   },
-  {
-    title: "Project Epsilon",
-    category: "Brand Identity",
-    imageUrl: "/images/project-epsilon.jpg",
-  },
-  {
-    title: "Project Zeta",
-    category: "Web Design",
-    imageUrl: "/images/project-zeta.jpg", // Assuming you have or will add this image
-  }
 ];
 
 export default function CreationsSection() {
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    const handleMouseMove = (event: React.MouseEvent<HTMLElement>) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        mouseX.set(event.clientX - rect.left);
-        mouseY.set(event.clientY - rect.top);
-    };
-
-    return (
-        <section
-            onMouseMove={handleMouseMove}
-            className="relative bg-[#111111] py-24 sm:py-32"
-        >
-            {/* The cursor light element, repurposed for the grid */}
-            <motion.div
-                className="pointer-events-none absolute -inset-px rounded-full z-0"
-                style={{
-                    background: `radial-gradient(600px at ${mouseX}px ${mouseY}px, rgba(139, 92, 246, 0.1), transparent 80%)`
-                }}
-            />
-
-            <div className="relative z-10 mx-auto w-[90vw]">
-                {/* Section Header */}
-                <div className="text-center mb-16 md:mb-20">
-                    <h2 className="font-serif font-light text-5xl sm:text-7xl md:text-8xl text-white/80">
-                        Our Creations
-                    </h2>
-                    <p className="font-sans text-lg text-white/60 mt-4">
-                        A selection of our favorite projects.
-                    </p>
-                </div>
-
-                {/* The Kinetic Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-                    {projects.map((project, index) => (
-                        <ProjectCard
-                            key={index}
-                            title={project.title}
-                            category={project.category}
-                            imageUrl={project.imageUrl}
-                        />
-                    ))}
-                </div>
+  return (
+    <section className="relative w-full bg-[#111111] py-20 md:py-28">
+        <div className="w-[90vw] mx-auto">
+            <div className="text-center mb-12 md:mb-16">
+                <h2 className="font-serif text-5xl sm:text-7xl font-light text-white/90">
+                    Our Creations
+                </h2>
+                <p className="font-sans text-lg text-white/60 mt-4 max-w-2xl mx-auto">
+                    A curated selection of projects that showcase our passion for design and technology.
+                </p>
             </div>
-        </section>
-    );
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                {projects.map((project, index) => (
+                    <ProjectCard 
+                        key={index} 
+                        title={project.title} 
+                        category={project.category} 
+                        imageUrl={project.imageUrl}
+                    />
+                ))}
+            </div>
+            
+            <div className="text-center mt-20 md:mt-28">
+                 <h2 className="font-serif font-light text-5xl sm:text-7xl md:text-8xl text-white/80">
+                    Let's talk.
+                 </h2>
+            </div>
+        </div>
+    </section>
+  );
 }

@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import { useScroll } from 'framer-motion';
 import CapabilityCard from './CapabilityCard';
 
 const services = [
@@ -24,28 +26,46 @@ const services = [
 ];
 
 export default function CapabilitiesSection() {
-    return (
-        <section className="bg-black w-full py-20 md:py-28">
-            <div className="w-[90vw] mx-auto">
-                <div className="text-center mb-12 md:mb-16">
-                    <h2 className="font-serif text-5xl sm:text-7xl font-light text-white/90">
-                        Our Capabilities
-                    </h2>
-                    <p className="font-sans text-lg text-white/60 mt-4 max-w-2xl mx-auto">
-                        We are a full-service creative studio, guiding projects from initial strategy to final execution.
-                    </p>
-                </div>
+    // --- CHANGE 2: The ref is now on the card container itself ---
+    const cardContainerRef = useRef<HTMLDivElement>(null);
+    
+    const { scrollYProgress } = useScroll({
+        target: cardContainerRef,
+        offset: ['start start', 'end end']
+    });
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                    {services.map((service, index) => (
+    return (
+        <section className="relative w-full bg-black pt-20 md:pt-28">
+            
+            {/* --- CHANGE 1: Header is now a standard, non-sticky element --- */}
+            <div 
+              className="w-[90vw] max-w-4xl mx-auto text-center mb-24"
+            >
+                <h2 className="font-serif text-5xl sm:text-7xl font-light text-white/90">
+                    Our Capabilities
+                </h2>
+                <p className="font-sans text-lg text-white/70 mt-4 max-w-2xl mx-auto">
+                    We are a full-service creative studio, guiding projects from initial strategy to final execution.
+                </p>
+            </div>
+
+            {/* This is now the dedicated animation area. The animation will only
+                start when the top of this container hits the top of the screen. */}
+            <div ref={cardContainerRef} className="relative h-[300vh]">
+                {services.map((service, i) => {
+                    const range: [number, number] = [i * 0.25, 1];
+                    
+                    return (
                         <CapabilityCard
-                            key={index}
-                            title={service.title}
-                            description={service.description}
-                            imageUrl={service.imageUrl}
+                            key={service.title}
+                            i={i}
+                            {...service}
+                            progress={scrollYProgress}
+                            range={range}
+                            totalCards={services.length}
                         />
-                    ))}
-                </div>
+                    );
+                })}
             </div>
         </section>
     );

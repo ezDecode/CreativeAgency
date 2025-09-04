@@ -179,3 +179,27 @@ html.lenis, html.lenis body {
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
+
+
+/* --- STYLES FOR 3D SCROLL SECTION --- */
+
+.fixed-canvas {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 1; /* Sits behind the content */
+}
+
+.scroll-section {
+  position: relative;
+  z-index: 2; /* Sits on top of the canvas */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
