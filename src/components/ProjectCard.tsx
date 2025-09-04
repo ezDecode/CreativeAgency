@@ -9,8 +9,14 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ title, category, imageUrl }: ProjectCardProps) {
   const cardVariants = {
-    initial: { filter: "saturate(0.8) brightness(0.9)" },
-    hover: { filter: "saturate(1) brightness(1)" },
+    initial: { 
+        filter: "saturate(0.8) brightness(0.9)",
+        scale: 1 
+    },
+    hover: { 
+        filter: "saturate(1) brightness(1)",
+        scale: 1.03 // The card will now scale up on hover
+    },
   };
 
   const imageVariants = {
@@ -25,7 +31,7 @@ export default function ProjectCard({ title, category, imageUrl }: ProjectCardPr
 
   return (
     <motion.div 
-      className="relative w-[80vw] h-[70vh] md:w-[45vw] md:h-[75vh] overflow-hidden rounded-2xl flex-shrink-0"
+      className="relative w-full h-[70vh] md:h-[75vh] overflow-hidden rounded-2xl flex-shrink-0"
       whileHover="hover"
       initial="initial"
       variants={cardVariants}
