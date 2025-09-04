@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import KineticTitle from "./KineticTitle";
-import LiquidImage from "./LiquidImage";
+import { useState } from 'react';
+import { motion, useMotionValue } from "framer-motion"; // Added useMotionValue
+import TextChapter from './TextChapter';
+import VisualCanvas from './VisualCanvas';
 
 const services = [
+  // ... services data remains unchanged
   {
     title: "Digital Design",
     description: "Our obsessively user-centric design process ensures every interaction is not just functional, but delightful.",
@@ -22,60 +23,61 @@ const services = [
   {
     title: "Strategy",
     description: "Our approach to content and SEO ensures your message is not just heard, but discovered, felt, and acted upon.",
-    imageUrl: "/images/service-content.jpg",
+    imageUrl: "/images/service-strategy.jpg",
   },
 ];
 
-export default function CapabilitiesSection(): React.ReactElement {
-  const [activeIndex, setActiveIndex] = useState(0);
+export default function CapabilitiesSection() {
+    const [activeIndex, setActiveIndex] = useState(0);
+    
+    // REFINEMENT 3: Hooks for the cursor light
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
 
-  // NOTE: This logic could be replaced with a scrolling library for more robust snapping.
-  // For this example, we simplify by showing one service at a time.
-  const activeService = services[activeIndex];
+    const handleMouseMove = (event: React.MouseEvent<HTMLElement>) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        mouseX.set(event.clientX - rect.left);
+        mouseY.set(event.clientY - rect.top);
+    };
 
-  return (
-    <div className="relative bg-black text-white grid grid-cols-1 lg:grid-cols-3 min-h-screen">
-      {/* --- LEFT COLUMN: KINETIC NAVIGATION --- */}
-      <aside 
-        className="lg:col-span-1 flex flex-col justify-center sticky top-0 h-screen p-16"
-      >
-        <div className="flex flex-col gap-y-8 relative">
-          {services.map((service, index) => (
-            <KineticTitle
-              key={index}
-              title={service.title}
-              isActive={activeIndex === index}
-              onClick={() => setActiveIndex(index)}
-              layoutId={`title-${service.title}`} // Unique layoutId for the animation
-            />
-          ))}
-        </div>
-      </aside>
-
-      {/* --- RIGHT COLUMN: CONTENT CANVAS --- */}
-      <main className="lg:col-span-2 flex items-center p-8 md:p-16">
-        <div className="w-full">
+    return (
+        <section 
+            onMouseMove={handleMouseMove} // Mouse listener for the light effect
+            className="relative bg-black w-full"
+        >
+            {/* REFINEMENT 3: The cursor light element */}
             <motion.div
-              key={activeIndex} // Re-triggers animation on change
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            >
-                <LiquidImage imageUrl={activeService.imageUrl} />
-                <div className="mt-6 flex justify-between items-start">
-                    <motion.h2 
-                        layoutId={`title-${activeService.title}`} // Matching layoutId
-                        className="font-sans text-2xl font-light lowercase tracking-tight text-white/90"
+                className="pointer-events-none absolute -inset-px rounded-full z-10"
+                style={{
+                    background: `radial-gradient(500px at ${mouseX}px ${mouseY}px, rgba(139, 92, 246, 0.1), transparent 80%)`
+                }}
+            />
+
+            <div className="w-[90vw] mx-auto grid grid-cols-1 lg:grid-cols-2">
+                
+                <div className="lg:col-span-1 py-12 relative z-20">
+                    <h2 
+                        className="font-sans text-base uppercase tracking-widest text-white/50 mb-32"
                     >
-                      {activeService.title}
-                    </motion.h2>
-                    <p className="font-sans tracking-tight font-light text-lg text-white/60 max-w-sm text-right">
-                      {activeService.description}
-                    </p>
+                        Our Process
+                    </h2>
+                    {services.map((service, index) => (
+                        <TextChapter
+                            key={index}
+                            title={service.title}
+                            description={service.description}
+                            index={index}
+                            activeIndex={activeIndex} // Pass down the activeIndex
+                            setActiveIndex={setActiveIndex}
+                        />
+                    ))}
                 </div>
-            </motion.div>
-        </div>
-      </main>
-    </div>
-  );
+
+                {/* REFINEMENT 1: Padding added for image resizing and balance */}
+                <div className="lg:col-span-1 hidden lg:block sticky top-0 h-screen p-24">
+                   <VisualCanvas activeIndex={activeIndex} services={services} />
+                </div>
+            </div>
+        </section>
+    );
 }

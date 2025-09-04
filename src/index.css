@@ -183,12 +183,22 @@ body {
   margin-bottom: 10rem !important;
 }
 
-/* Add this to your index.css */
-.service-glow {
-  background-image: radial-gradient(
-    circle at 50% 50%,
-    rgba(124, 58, 237, 0.1), /* A soft, elegant purple glow */
-    rgba(124, 58, 237, 0) 40%,
-    transparent 70%
-  );
+
+.card-glow {
+  box-shadow: 0 0 80px -10px rgba(124, 58, 237, 0.25);
+}
+
+/* For Smooth enhanced scrolling: */
+/* Add these rules to the top of your existing index.css, after @import "tailwindcss"; */
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
 }
