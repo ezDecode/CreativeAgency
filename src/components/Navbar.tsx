@@ -24,7 +24,6 @@ export default function Navbar() {
           onHoverEnd={() => setIsHovered(false)}
           initial="initial"
           animate={isHovered ? "hover" : "initial"}
-          // --- THE FIX IS HERE: Added the 'relative' class ---
           className="relative h-[1.2em] cursor-pointer overflow-hidden text-[1.375rem] md:text-[1.875rem] font-light font-display tracking-wide text-white leading-tight"
         >
           <motion.div variants={containerVariants} className="flex">

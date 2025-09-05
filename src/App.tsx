@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import HeroSection from "./components/HeroSection";
 import CapabilitiesSection from "./components/CapabilitiesSection";
-import CreationsSection from "./components/CreationsSection";
 // Other imports remain the same
 
 function App() {
@@ -31,7 +30,6 @@ function App() {
       <div>
         <HeroSection />
         <CapabilitiesSection />
-        <CreationsSection /> {/* Add the new section here */}
 
         {/* This final section can be your footer or contact section later */}
         <div className="bg-white flex h-[60vh] items-center justify-center">
