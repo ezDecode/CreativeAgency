@@ -1,10 +1,16 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   1. ROOT & GLOBAL STYLES
+   ========================================================================== */
+
 :root {
+  /* Font Families */
   --font-sans: 'Aeonik', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'PP Editorial New', Georgia, 'Times New Roman', serif;
   --font-display: 'Aeonik', system-ui, sans-serif;
-  
+
+  /* Global Typography & Rendering */
   font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
@@ -18,6 +24,11 @@
   --scroll-behavior: smooth;
 }
 
+/* ==========================================================================
+   2. FONT FACE DECLARATIONS
+   ========================================================================== */
+
+/* Aeonik Font Family */
 @font-face {
   font-family: 'Aeonik';
   src: url('/fonts/Aeonik/Aeonik-Regular.woff2') format('woff2'),
@@ -27,8 +38,7 @@
   font-display: swap;
 }
 
-
-
+/* PP Editorial New Font Family */
 @font-face {
   font-family: 'PP Editorial New';
   src: url('/fonts/PPEditorialNew/PPEditorialNew-Regular.ttf') format('truetype');
@@ -77,17 +87,9 @@
   font-display: swap;
 }
 
-html.lenis, html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
+/* ==========================================================================
+   3. BODY & GLOBAL RESETS
+   ========================================================================== */
 
 body {
   margin: 0;
@@ -104,6 +106,27 @@ body {
   box-sizing: border-box;
 }
 
+/* ==========================================================================
+   4. SMOOTH SCROLLING (LENIS)
+   ========================================================================== */
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* ==========================================================================
+   5. HELPER & UTILITY CLASSES
+   ========================================================================== */
+
+/* Performance Utilities */
 .will-change-transform {
   will-change: transform;
 }
@@ -118,24 +141,7 @@ body {
   perspective: 1000px;
 }
 
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #ffffff;
-    color: #213547;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
+/* Debugging Utilities */
 .debug-outline {
   outline: 1px solid red !important;
 }
@@ -144,6 +150,7 @@ body {
   background-color: rgba(255, 0, 0, 0.1) !important;
 }
 
+/* Custom Spacing & Component Styles */
 .spacing-zone {
   min-height: var(--spacing-height, 6rem);
 }
@@ -160,46 +167,52 @@ body {
   margin-bottom: 10rem !important;
 }
 
-
 .card-glow {
   box-shadow: 0 0 80px -10px rgba(124, 58, 237, 0.25);
 }
 
-/* For Smooth enhanced scrolling: */
-/* Add these rules to the top of your existing index.css, after @import "tailwindcss"; */
+/* ==========================================================================
+   6. CUSTOM UTILITIES
+   ========================================================================== */
 
-html.lenis, html.lenis body {
-  height: auto;
+/* Provides fading edges for the CapabilitiesSection text scroll */
+.text-fade-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
 }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
+/* ==========================================================================
+   7. MEDIA QUERIES
+   ========================================================================== */
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: #ffffff;
+    color: #213547;
+  }
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-
-/* --- STYLES FOR 3D SCROLL SECTION --- */
-
-.fixed-canvas {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 1; /* Sits behind the content */
-}
-
-.scroll-section {
-  position: relative;
-  z-index: 2; /* Sits on top of the canvas */
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: white;
+/* Reduced Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
