@@ -29,6 +29,7 @@ function App() {
     <main className="bg-[#111111]">
       <div>
         <HeroSection />
+        
         <CapabilitiesSection />
 
         {/* This final section can be your footer or contact section later */}

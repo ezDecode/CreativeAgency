@@ -31,7 +31,7 @@ export default function HeroSection() {
     ];
 
     return (
-        <section className="relative flex h-screen flex-col overflow-hidden p-4 sm:p-6 text-white md:p-8 lg:p-12">
+        <section className="relative flex h-screen flex-col overflow-hidden p-4 sm:p-6 text-white md:p-8 lg:p-12 mb-8">
             <div className="relative z-10 flex h-full flex-grow flex-col">
                 <Navbar />
 
@@ -55,9 +55,11 @@ export default function HeroSection() {
                         </div>
 
                         {/* This component remains outside the alignment wrapper to stay full-width */}
-                        <InfiniteMovingText baseVelocity={-1}>
-                            Kinetic—Studios • Ideas in Motion •
-                        </InfiniteMovingText>
+                        <div className="overflow-hidden">
+                            <InfiniteMovingText baseVelocity={-1}>
+                                Kinetic—Studios • Ideas in Motion •
+                            </InfiniteMovingText>
+                        </div>
                     </div>
                 </div>
             </div>
