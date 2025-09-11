@@ -5,123 +5,95 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register GSAP plugins
 gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+const HEADING_TEXT = "Digital Design • Branding • Motion • Strategy";
+
+// Helper component for splitting text into animatable characters
+function SplitChars({ text, charRefs }: { text: string; charRefs: React.MutableRefObject<(HTMLSpanElement | null)[]> }) {
+  return (
+    <>
+      {text.split("").map((char, index) => (
+        <span
+          key={index}
+          className="inline-block origin-bottom will-change-transform"
+          ref={(el) => { charRefs.current[index] = el; }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </>
+  );
+}
 
 export default function CapabilitiesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const textContainerRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-  useGSAP(() => {
-    // Wait for refs to be populated
-    if (!textContainerRef.current || charRefs.current.length === 0) return;
+  useGSAP(
+    () => {
+      const initAnimation = () => {
+        if (!sectionRef.current || !headingRef.current) return;
+        const validChars = charRefs.current.filter(Boolean) as HTMLSpanElement[];
+        if (validChars.length === 0) return;
 
-    // Create horizontal movement timeline with smoother start position
-    const moveTimeline = gsap.timeline({ paused: true })
-      .fromTo(
-        textContainerRef.current,
-        { x: "110vw" }, // Start further right for smoother entrance
-        { x: "-110%", ease: "none" } // End further left for complete exit
-      );
+        const heading = headingRef.current;
 
-    // Create enhanced character animation timeline - TOP RIGHT TO CENTER with FLUID MOTION
-    const charTimeline = gsap.timeline({ paused: true })
-      .fromTo(charRefs.current.filter(Boolean), 
-        { 
-          x: "8vw", // Start from RIGHT (horizontal offset)
-          y: "-20vh", // Start from TOP (vertical offset) - increased for more dramatic effect
-          scaleY: 0.8, // More dramatic vertical compression
-          scaleX: 1.2, // More dramatic horizontal stretch
-          rotation: 15, // Add slight rotation for more dynamic feel
-          filter: "blur(8px)", // Increased blur for smoother transition
-          opacity: 0.5, // Lower opacity for smoother fade-in
-        },
-        {
-          x: "0vw", // Move to center horizontally
-          y: "0vh", // Move to center vertically
-          scaleY: 1,
-          scaleX: 1,
-          rotation: 0, // Rotate back to normal
-          filter: "blur(0px)",
+        // 1. Master Horizontal Scroll (UNTOUCHED - Logic is correct)
+        const horizontalScroll = gsap.fromTo(
+          heading,
+          { x: () => window.innerWidth },
+          {
+            x: () => -heading.offsetWidth,
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top top",
+              end: () => `+=${heading.offsetWidth + window.innerWidth}`,
+              scrub: 1.5,
+              pin: true,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+
+        // 2. REFINED "WAVE REVEAL" ANIMATION (UNTOUCHED - Logic is correct)
+        gsap.set(validChars, {
+          yPercent: 100,
+          opacity: 0,
+          transformOrigin: "bottom center",
+        });
+
+        gsap.to(validChars, {
+          yPercent: 0,
           opacity: 1,
-          ease: "elastic.out(1.5, 0.4)", // INCREASED ELASTIC: more amplitude and period
-          stagger: {
-            amount: 0.3, // Increased total stagger time for more fluid wave
-            from: "start",
-            ease: "power2.out" // Smooth stagger distribution
+          stagger: 0.02,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            containerAnimation: horizontalScroll,
+            start: "left 80%",
+            toggleActions: "play none none reverse",
           },
-          duration: 2.2 // Longer duration for more fluid motion
-        }
-      );
+        });
+      };
 
-    // Enhanced ScrollTrigger with smoother scrub
-    const st = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: "+=400%", // Increased scroll distance for more fluid control
-      scrub: 2, // Increased scrub for smoother, more fluid movement
-      pin: true,
-      anticipatePin: 1, // Better performance
-      onUpdate: (self) => {
-        // Smooth progress updates
-        const progress = self.progress;
-        moveTimeline.progress(progress);
-        charTimeline.progress(progress);
-      }
-    });
+      gsap.delayedCall(0.1, initAnimation);
 
-    // Cleanup
-    return () => {
-      st.kill();
-    };
-
-  }, { scope: sectionRef });
-
-  // Enhanced character splitting function
-  function SplitChars({ text }: { text: string }) {
-    const chars = text.split("");
-    
-    return (
-      <>
-        {chars.map((char, index) => (
-          <span
-            key={index}
-            className="char inline-block relative"
-            style={{ 
-              transformOrigin: 'center center', // Center origin for balanced rotation
-              willChange: 'transform, opacity, filter' // GPU optimization
-            }}
-            ref={(el) => {
-              charRefs.current[index] = el;
-            }}
-          >
-            {char === ' ' ? '\u00A0' : char}
-          </span>
-        ))}
-      </>
-    );
-  }
+    },
+    { scope: sectionRef, dependencies: [] }
+  );
 
   return (
-    <div
-      ref={sectionRef}
-      className="relative w-screen h-screen overflow-hidden bg-black"
-    >
-      {/* Fixed side masks - removed conflicting via classes */}
-      <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-black via-black/70 to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-black via-black/70 to-transparent z-10 pointer-events-none" />
-      
-      <div
-        ref={textContainerRef}
-        className="absolute top-1/2 -translate-y-1/2 h-fit"
-        style={{
-          willChange: 'transform', // GPU optimization
-          backfaceVisibility: 'hidden' // Prevent flickering
-        }}
-      >
-        <h1 className="px-[5vw] font-sans text-white whitespace-nowrap font-light text-[clamp(4.8rem,16vw,12.8rem)]">
-          <SplitChars text="Digital Design • Branding • Motion • Strategy" />
+    <div ref={sectionRef} className="relative z-20 w-full overflow-hidden">
+      <div className="flex h-screen items-center">
+        <h1
+          ref={headingRef}
+          className="shrink-0 -translate-y-16 whitespace-nowrap font-sans text-[clamp(6.72rem,25.2vw,16.8rem)] font-semibold leading-none tracking-tight text-gray-200"
+          aria-label={HEADING_TEXT}
+        >
+          <SplitChars text={HEADING_TEXT} charRefs={charRefs} />
         </h1>
       </div>
     </div>

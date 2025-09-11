@@ -2,23 +2,27 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import HeroSection from "./components/HeroSection";
 import CapabilitiesSection from "./components/CapabilitiesSection";
-// Other imports remain the same
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 function App() {
   useEffect(() => {
-    // REFINEMENT 2: Lerp value tuned for a slightly more responsive feel
+    // Initialize Lenis for smooth scrolling
     const lenis = new Lenis({
       lerp: 0.08,
       duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    // Connect Lenis to ScrollTrigger's update cycle
+    lenis.on('scroll', ScrollTrigger.update);
 
-    requestAnimationFrame(raf);
+    // Integrate Lenis into GSAP's ticker for synchronization
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       lenis.destroy();
@@ -27,16 +31,17 @@ function App() {
 
   return (
     <main className="bg-[#111111]">
-      <div>
-        <HeroSection />
-        
-        <CapabilitiesSection />
-
-        {/* This final section can be your footer or contact section later */}
-        <div className="bg-white flex h-[60vh] items-center justify-center">
-          <h2 className="text-2xl md:text-4xl text-gray-800">The Final Section</h2>
-        </div>
+      <HeroSection />
+      <CapabilitiesSection />
+      {/* 
+        FIX APPLIED: Added spacer divs to create enough vertical scroll distance 
+        for the horizontal scroll animation in CapabilitiesSection to complete.
+      */}
+      <div className="relative z-20 h-screen" />
+      <div className="relative z-20 flex h-screen items-center justify-center">
+        <h2 className="text-2xl text-gray-200 md:text-4xl">The Final Section</h2>
       </div>
+      <div className="relative z-20 h-screen" />
     </main>
   );
 }
